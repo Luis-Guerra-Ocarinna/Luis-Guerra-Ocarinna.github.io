@@ -1,12 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lol</title>
+    <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
 </head>
+
 <body>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit officia assumenda illo obcaecati itaque saepe voluptatibus earum alias exercitationem natus architecto voluptas quod, blanditiis sint eius ullam eum fuga? Natus!
+    <select _="
+        on load
+            fetch 'http://www.geonames.org/childrenJSON?geonameId=3469034' as json
+            repeat for state in result's geonames
+                set :a to state
+                append `<option>${state.name}<option/>` to my innerHTML
+                log state.name
+            end
+        on change send estado(id:`${:a.geonameId}`) to #a
+            ">
+    </select>
+    <select id="a" _="
+        on estado(id)
+            fetch `http://www.geonames.org/childrenJSON?geonameId=${id}` as json
+            repeat for city in result's geonames
+                append `<option>${city.name}<option/>` to my innerHTML
+                log city.name
+            end
+            ">
+    </select>
 </body>
+
 </html>
