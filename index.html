@@ -5,15 +5,26 @@
 </head>
 
 <body>
-    <button _="on click increment :x
-            if :x <= 3
-              put :x into the next <output/>
-            else
-              put '3 is the max...' into the next <output/>
-            end">
-Click Me
-</button>
-<output>--</output>
+    <select _="
+        on load
+            fetch 'http://www.geonames.org/childrenJSON?geonameId=3469034' as json
+            repeat for state in result's geonames
+                set :a to state
+                append `<option>${state.name}<option/>` to my innerHTML
+                log state.name
+            end
+        on change send estado(id:`${:a.geonameId}`) to #a
+            ">
+    </select>
+    <select id="a" _="
+        on estado(id)
+            fetch `http://www.geonames.org/childrenJSON?geonameId=${id}` as json
+            repeat for city in result's geonames
+                append `<option>${city.name}<option/>` to my innerHTML
+                log city.name
+            end
+            ">
+    </select>
 </body>
 
 </html>
